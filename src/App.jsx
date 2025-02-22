@@ -9,6 +9,7 @@ import About from './components/About'
 import "remixicon/fonts/remixicon.css";
 import Login from './components/Login'
 import Signup from './components/Signup'
+import Footer from './components/Footer'
 
 
 const App = () => {
@@ -16,7 +17,7 @@ const App = () => {
     
       
         <Router>
-        <Navbar className="w"/>
+        <Navbar className=""/>
           <Routes>
             
             <Route path="/" element={<Home />} />
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/login" element={ <Login/>} />
             <Route path="/signup" element={ <Signup/>} />
           </Routes>
+          <Footer/>
         </Router>
    
   )

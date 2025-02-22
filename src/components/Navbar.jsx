@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import logo from '../assets/newlogo.png'
 const Navbar = () => {
   const [isopen, setIsopen] = useState(false);
 
   return (
     <nav className="bg-white sticky top-0 w-full z-10 shadow-md">
       <div className="flex justify-between items-center h-20 px-4 sm:px-6">
-        {/* Logo */}
+    
         <div className="flex items-center gap-2">
-          <i className="text-3xl text-black ri-blogger-fill"></i>
-          <Link to="/" className="text-2xl font-semibold text-black">
-            My Blog
+        
+          <Link to="/" className=" flex text-2xl  font-semibold text-black">
+          <img className=" h-16 rounded-full " src={logo} alt="" />
+          <span className="py-4 text-orange-500 text-2xl">Blog</span><span className="py-4">verse</span>
           </Link>
         </div>
-
-        {/* Desktop Menu */}
+ 
+       
         <div className="hidden md:flex items-center gap-6">
           <Link to="/" className="hover:text-gray-600">Home</Link>
           <Link to="/blog" className="hover:text-gray-600">Blog</Link>
@@ -23,7 +24,7 @@ const Navbar = () => {
           <Link to="/about" className="hover:text-gray-600">About us</Link>
         </div>
 
-        {/* Desktop Auth Buttons */}
+        
         <div className="hidden md:flex items-center gap-4">
           <Link to="/login" className="hover:text-gray-600">Log in</Link>
           <Link to="/signup" className="bg-black text-white py-2 px-4 rounded-lg">
