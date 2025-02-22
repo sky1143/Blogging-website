@@ -13,10 +13,10 @@ import Signup from './components/Signup'
 
 const App = () => {
   return (
-    <div className='' >
-      <div>
+    
+      
         <Router>
-        <Navbar/>
+        <Navbar className="w"/>
           <Routes>
             
             <Route path="/" element={<Home />} />
@@ -27,8 +27,7 @@ const App = () => {
             <Route path="/signup" element={ <Signup/>} />
           </Routes>
         </Router>
-      </div>
-    </div>
+   
   )
 }
 
