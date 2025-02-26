@@ -28,6 +28,7 @@ const Blog = () => {
            </div>
            <div className="font-semibold p-2 mt-2   text-white">
             <button onClick={() => {
+              
 
             }}  className="mr-4 bg-orange-500 p-2 rounded-lg   hover:text-gray-300">Edit</button>
             <button 
@@ -36,9 +37,12 @@ const Blog = () => {
             }}
             className=" bg-red-500 p-2 rounded-lg  hover:text-gray-300">Delete</button>
            </div>
-
+          
           </div>
         ))}
+         <div className="flex  w-screen justify-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-semibold p-2 mt-2   text-white">
+            <button className="mr-4 bg-orange-500 p-2 rounded-lg   hover:text-gray-300">New post</button>
+           </div>
       </div>
     </div>
   );
