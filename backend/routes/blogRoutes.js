@@ -32,7 +32,7 @@ router.get("/:id", async (req, res) => {
     }
 })
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", upload.single("imageUrl"), async (req, res) => {
     try {
         const { title, description, author } = req.body;
 
@@ -84,7 +84,8 @@ router.post("/", upload.single("image"), async (req, res) => {
     }
 });
 
-router.patch("/:id", upload.single("image"), async (req, res) => {
+
+router.patch("/:id", upload.single("imageUrl"), async (req, res) => {
     try {
         const { title, description, author } = req.body;
         const existingPost = await BlogPost.findById(req.params.id);
@@ -94,7 +95,7 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
         }
 
         let imageUrl = existingPost.imageUrl; // Keep old image if no new one is uploaded
-        let newPublicId = null;
+        let newPublicId = `blog-images/${title.replace(/\s+/g, "_").toLowerCase()}`;
 
         // ✅ If a new image is uploaded, delete the old one and upload the new one
         if (req.file) {
@@ -109,40 +110,32 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
                     await cloudinary.uploader.destroy(oldPublicId);
                 }
 
-                // ✅ Upload new image with the new title as public_id
-                newPublicId = `blog-images/${title.replace(/\s+/g, "_").toLowerCase()}`;
+                // ✅ Upload new image and use the **same public ID** to overwrite
                 const result = await new Promise((resolve, reject) => {
-                    cloudinary.uploader.upload_stream(
-                        { folder: "blog-images", public_id: newPublicId },
+                    const stream = cloudinary.uploader.upload_stream(
+                        {
+                            folder: "blog-images",
+                            public_id: newPublicId,
+                            resource_type: "image",
+                            overwrite: true, // ✅ Ensures the image is REPLACED
+                            invalidate: true, // ✅ Forces cache update
+                        },
                         (error, result) => {
-                            if (error) reject(error);
-                            else resolve(result);
+                            if (error) {
+                                console.error("Cloudinary upload error:", error);
+                                reject(error);
+                            } else {
+                                resolve(result);
+                            }
                         }
-                    ).end(req.file.buffer);
+                    );
+                    stream.end(req.file.buffer);
                 });
 
                 imageUrl = result.secure_url;
             } catch (error) {
                 console.error("Image upload failed:", error);
                 return res.status(500).json({ error: "Image upload failed" });
-            }
-        }
-        // ✅ If only the title is updated, rename the Cloudinary image
-        else if (title && existingPost.imageUrl) {
-            try {
-                const urlParts = existingPost.imageUrl.split('/');
-                const fileName = urlParts[urlParts.length - 1].split(".")[0];
-                const oldPublicId = `blog-images/${fileName}`;
-
-                // ✅ New public ID based on updated title
-                newPublicId = `blog-images/${title.replace(/\s+/g, "_").toLowerCase()}`;
-
-                // ✅ Rename in Cloudinary
-                const renameResult = await cloudinary.uploader.rename(oldPublicId, newPublicId);
-                imageUrl = renameResult.secure_url;
-            } catch (error) {
-                console.error("Failed to rename image in Cloudinary:", error);
-                return res.status(500).json({ error: "Failed to update image title in Cloudinary" });
             }
         }
 
@@ -168,7 +161,10 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
 
 
 
-router.put("/:id", upload.single("image"), async (req, res) => {
+
+
+
+router.put("/:id", upload.single("imageUrl"), async (req, res) => {
     try {
         const { title, description, author } = req.body;
         if (!title || !description || !author) {
