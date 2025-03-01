@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
     }
 })
 
+
 //  Get Single Blog Post
 router.get("/:id", async (req, res) => {
     try {
@@ -224,10 +225,6 @@ router.put("/:id", upload.single("imageUrl"), async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
-
-
-
-
 
 // delete route
 

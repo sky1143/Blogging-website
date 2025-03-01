@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+
+
 const Blog = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -12,13 +14,17 @@ const Blog = () => {
     image: null, // Changed from imageUrl to image (file)
   });
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+
+
+
   useEffect(() => {
     fetchPosts();
   }, []);
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/blogs/");
+      const response = await axios.get(`${API_BASE_URL}/api/blogs/`);
       if (response.data?.blogs && Array.isArray(response.data.blogs)) {
         setBlogPosts(response.data.blogs);
       }
@@ -35,9 +41,11 @@ const Blog = () => {
     }
   };
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
@@ -49,22 +57,31 @@ const Blog = () => {
       }
 
       if (editId) {
-        await axios.patch(`http://localhost:4000/api/blogs/${editId}`, formDataToSend, {
+        await axios.patch(`${API_BASE_URL}/api/blogs/${editId}`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Post updated successfully!");
       } else {
-        await axios.post("http://localhost:4000/api/blogs/", formDataToSend, {
+        await axios.post(`${API_BASE_URL}/api/blogs/`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Post created successfully!");
       }
+
+      setFormData({
+        title: "",
+        description: "",
+        author: "",
+        image: null,
+      });
 
       setShowModal(false);
       setEditId(null);
       fetchPosts();
     } catch (error) {
       console.error("Error saving post:", error);
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -83,7 +100,7 @@ const Blog = () => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      await axios.delete(`http://localhost:4000/api/blogs/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/blogs/${id}`);
       alert("Post deleted successfully!");
       fetchPosts(); // Refresh the blog list after deletion
     } catch (error) {
@@ -123,8 +140,14 @@ const Blog = () => {
               <input type="text" name="author" placeholder="Author" className="w-full p-2 mb-3 border" value={formData.author} onChange={handleChange} required />
               <input type="file" name="image" className="w-full p-2 mb-3 border" onChange={handleChange} required />
               <div className="flex justify-between">
-                <button type="submit" className="bg-green-500 p-2 text-white rounded-lg">{editId ? "Update" : "Submit"}</button>
-                <button onClick={() => setShowModal(false)} type="button" className="bg-gray-500 p-2 text-white rounded-lg">Cancel</button>
+                <button type="submit"
+
+                  className="bg-green-500 p-2 text-white rounded-lg"
+                >{editId ? "Update" : "Submit"}
+                </button>
+                <button onClick={() => setShowModal(false)}
+                  type="button" className="bg-gray-500 p-2 text-white rounded-lg"
+                >Cancel</button>
               </div>
             </form>
           </div>
