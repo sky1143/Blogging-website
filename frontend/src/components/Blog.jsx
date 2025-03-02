@@ -24,19 +24,12 @@ const Blog = () => {
 
   const fetchPosts = async () => {
     try {
-      console.log("Fetching from API:", `${API_BASE_URL}/api/blogs`); // Log the full URL
-  
-      const response = await axios.get(`${API_BASE_URL}/api/blogs`);
+      const response = await axios.get(`${API_BASE_URL}api/blogs/`);
       if (response.data?.blogs && Array.isArray(response.data.blogs)) {
         setBlogPosts(response.data.blogs);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
-      if (error.response) {
-        console.error("Response Data:", error.response.data);
-        console.error("Response Status:", error.response.status);
-        console.error("Response Headers:", error.response.headers);
-      }
     }
   };
 
@@ -64,12 +57,12 @@ const Blog = () => {
       }
 
       if (editId) {
-        await axios.patch(`${API_BASE_URL}/api/blogs/${editId}`, formDataToSend, {
+        await axios.patch(`${API_BASE_URL}api/blogs/${editId}`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Post updated successfully!");
       } else {
-        await axios.post(`${API_BASE_URL}/api/blogs/`, formDataToSend, {
+        await axios.post(`${API_BASE_URL}api/blogs/`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Post created successfully!");
@@ -107,7 +100,7 @@ const Blog = () => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/api/blogs/${id}`);
+      await axios.delete(`${API_BASE_URL}api/blogs/${id}`);
       alert("Post deleted successfully!");
       fetchPosts(); 
     } catch (error) {
