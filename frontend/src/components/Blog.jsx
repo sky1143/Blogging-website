@@ -11,7 +11,7 @@ const Blog = () => {
     title: "",
     description: "",
     author: "",
-    image: null, // Changed from imageUrl to image (file)
+    image: null, 
   });
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -34,7 +34,7 @@ const Blog = () => {
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
-      setFormData({ ...formData, image: e.target.files[0] }); // Store selected file
+      setFormData({ ...formData, image: e.target.files[0] }); 
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
@@ -52,7 +52,7 @@ const Blog = () => {
       formDataToSend.append("author", formData.author);
 
       if (formData.image) {
-        formDataToSend.append("imageUrl", formData.image); // Ensure field name matches backend
+        formDataToSend.append("imageUrl", formData.image); 
       }
 
       if (editId) {
@@ -90,7 +90,7 @@ const Blog = () => {
       title: post.title,
       description: post.description,
       author: post.author,
-      image: null, // Reset image field to prevent reusing old files
+      image: null, 
     });
     setShowModal(true);
   };
@@ -101,7 +101,7 @@ const Blog = () => {
     try {
       await axios.delete(`${API_BASE_URL}/api/blogs/${id}`);
       alert("Post deleted successfully!");
-      fetchPosts(); // Refresh the blog list after deletion
+      fetchPosts(); 
     } catch (error) {
       console.error("Error deleting post:", error);
     }
