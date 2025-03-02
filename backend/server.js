@@ -6,7 +6,7 @@ const connectDB = require('./config/db')
 const blogRoutes =  require("./routes/blogRoutes")
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ;
 
 app.use(express.json())
 app.use(cors({ origin: '*' }));
