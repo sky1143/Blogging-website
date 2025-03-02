@@ -18,6 +18,7 @@ const Blog = () => {
   console.log(API_BASE_URL);
 
   useEffect(() => {
+    console.log("API_BASE_URL from .env:", API_BASE_URL);
     fetchPosts();
   }, []);
 
