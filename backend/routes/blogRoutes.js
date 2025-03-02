@@ -162,9 +162,6 @@ router.patch("/:id", upload.single("imageUrl"), async (req, res) => {
 
 
 
-
-
-
 router.put("/:id", upload.single("imageUrl"), async (req, res) => {
     try {
         const { title, description, author } = req.body;
