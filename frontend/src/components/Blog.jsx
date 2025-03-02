@@ -24,12 +24,19 @@ const Blog = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/blogs/`);
+      console.log("Fetching from API:", `${API_BASE_URL}/api/blogs`); // Log the full URL
+  
+      const response = await axios.get(`${API_BASE_URL}/api/blogs`);
       if (response.data?.blogs && Array.isArray(response.data.blogs)) {
         setBlogPosts(response.data.blogs);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
+      if (error.response) {
+        console.error("Response Data:", error.response.data);
+        console.error("Response Status:", error.response.status);
+        console.error("Response Headers:", error.response.headers);
+      }
     }
   };
 
