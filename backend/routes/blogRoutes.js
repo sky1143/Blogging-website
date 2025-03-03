@@ -229,7 +229,7 @@ router.delete("/:id", async (req, res) => {
     try {
         // 🔹 Find the post by ID
         const post = await BlogPost.findById(req.params.id);
-        if (!post) {
+        if (!post) {    
             return res.status(404).json({ message: "Post not found" });
         }
 
@@ -249,7 +249,7 @@ router.delete("/:id", async (req, res) => {
 
                 console.log("Cloudinary Delete Response:", result);
 
-                if (result.result !== "ok") {
+                if (result.result !== "ok" && result.result !== "not found") {
                     return res.status(500).json({ error: "Failed to delete image from Cloudinary" });
                 }
             } catch (imageError) {
