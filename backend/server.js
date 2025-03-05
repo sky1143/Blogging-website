@@ -10,12 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json())
 
-
-app.use(cors({
-    origin: 'https://blogging-website-1-frontend.onrender.com/', 
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'], 
-    allowedHeaders: ['Content-Type']
-  }));
+app.use(cors({ origin: '*' }));
 
 connectDB();
 
