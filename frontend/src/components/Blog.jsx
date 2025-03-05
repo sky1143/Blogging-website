@@ -98,15 +98,24 @@ const Blog = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
-
+  
     try {
-      await axios.delete(`${API_BASE_URL}api/blogs/${id}`);
+      const deleteUrl = `${API_BASE_URL}api/blogs/${id}`;
+      console.log("Deleting post:", deleteUrl);
+  
+      await axios.delete(deleteUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
       alert("Post deleted successfully!");
       fetchPosts(); 
     } catch (error) {
-      console.error("Error deleting post:", error);
+      console.error("Error deleting post:", error.response?.data || error.message);
     }
   };
+  
 
   return (
     <div className="w-full p-6">

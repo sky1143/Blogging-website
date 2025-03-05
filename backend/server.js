@@ -6,10 +6,16 @@ const connectDB = require('./config/db')
 const blogRoutes =  require("./routes/blogRoutes")
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json())
-app.use(cors({ origin: '*' }));
+
+
+app.use(cors({
+    origin: 'https://blogging-website-1-frontend.onrender.com/', 
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'], 
+    allowedHeaders: ['Content-Type']
+  }));
 
 connectDB();
 
