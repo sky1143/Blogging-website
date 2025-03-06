@@ -16,6 +16,7 @@ connectDB();
 
 app.use("/api/blogs", blogRoutes)
 
+
 app.get("/" , (req, res) => {
     res.send({ message: "Api is working"});
 })
